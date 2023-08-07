@@ -32,10 +32,14 @@ class SplitDatasetCombined_BDD:
 
         self.collate_fn = collate_fn
 
+    #maakt de dataloaders aan voor train, val en test
     def __call__(self, val_split, shuffle_dataset, random_seed, batch_size, *args, **kwargs):
 
+        #returnt de indices voor train,val en test
+        #[0:1350], [1350:1500], [1500:2000] respectively
         train_indices, val_indices, test_indices = self.create_random_indices(val_split)
 
+        #waarom zou je nog een keer shufflen? dat is al in create_random_indices gedaan
         np.random.shuffle(train_indices)
         np.random.shuffle(val_indices)
         np.random.shuffle(test_indices)
@@ -45,6 +49,10 @@ class SplitDatasetCombined_BDD:
         valid_sampler = SubsetRandomSampler(val_indices)
         test_sampler = SubsetRandomSampler(test_indices)
 
+        #self.dataset_train is nu nog een tuple van (tensor, array, string), waarbij tensor = image, array = labels en string = image path
+        #self.data_train[0] bevat nu 1 datapunt
+        #batch_size = 8
+        #sampler = gives random permutation of 8 train_indices each time train_indices is called
         train_loader = DataLoader(self.dataset_train, batch_size=batch_size,  sampler=train_sampler, collate_fn=self.collate_fn)
         validation_loader = DataLoader(self.dataset_val, batch_size=batch_size, sampler=valid_sampler, collate_fn=self.collate_fn)
         test_loader = DataLoader(self.dataset_test,  sampler=test_sampler, collate_fn=self.collate_fn)
@@ -52,17 +60,26 @@ class SplitDatasetCombined_BDD:
         return train_loader, validation_loader, test_loader
 
     def create_random_indices(self,val_split):
-        #train_indices = []
-        #val_indices = []
-        #test_indices = []
+        # To evaluate our adversarial perturbation, we randomly
+        # chose 2,000 images from the validation set of each of the
+        # datasets (BDD, MTSD, and PASCAL). For each dataset, we
+        # used 1,500 images to train the UAP and then examined its
+        # effectiveness on the remaining 500 images
 
+        #De UAPs worden gemaakt obv de validation set, which is 10k long
+        #maak een lijst van [0,1,2,3,...,9999]
         all_indices = [i for i in range(10000)]
         total = 2000
+        #neemt 2000 random indices uit all_indices
         data_set_indices = random.choices(all_indices, k=total)
         train_val = 1500
+        #split_index = 1500 * 0.9 = 1350
         split_index = int(train_val * (1-val_split))
+        #datapunt 0 tot 1350
         train_indices = data_set_indices[0:split_index]
+        #datapunt 1350 tot 1500 (150 lang)
         val_indices = data_set_indices[split_index:train_val]
+        #datapunt 1500 tot 2000 (500 lang)
         test_indices = data_set_indices[train_val:total]
 
         return train_indices, val_indices, test_indices
@@ -87,15 +104,23 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         img_path = os.path.join(self.img_dir, self.img_names[idx])
         lab_path = os.path.join(self.lab_dir, self.img_names[idx]).replace('.jpg', '.txt').replace('.png', '.txt')
-
+        #numpyarray (720, 1280, 3) (y-as, x-as, RGB)
         image = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
+        #voorbeeld van label .txt file
+        # 0 0.491778 0.432859 0.009186 0.009526
+        # 2 0.274377 0.504889 0.039806 0.057157
+        # 2 0.227299 0.502167 0.071191 0.078931
+        # 2 0.168355 0.518498 0.081908 0.087097
         label = np.loadtxt(lab_path, ndmin=2)
         zeros = np.zeros((len(label),1)) + 0.00001
         ones = np.ones((len(label),1))
+        #Trek 0.01 af van de laatste kolommen
+        #WAAROM?
         label[:,[3,4]] = label[:,[3,4]] - 0.01
         label[:, [3]] = np.minimum(ones, np.maximum(zeros, label[:, [3]]))
         label[:, [4]] = np.minimum(ones, np.maximum(zeros, label[:, [4]]))
 
+        #transformeer de data zodat het 640x640 is
         transformed = self.transform(image=image, bboxes=label[:, 1:], class_labels=label[:, 0])
         image = transformed['image'].float()
         bboxes = transformed['bboxes']

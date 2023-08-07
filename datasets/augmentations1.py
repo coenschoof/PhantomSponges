@@ -11,6 +11,8 @@ train_transform = A.Compose(
     ],
     bbox_params=A.BboxParams(format="yolo", min_visibility=0.2, label_fields=['class_labels']),
 )
+
+#Onderstaande wordt nooit gebruikt
 val_test_transforms = A.Compose(
     [
         A.Resize(height=IMAGE_SIZE, width=IMAGE_SIZE),

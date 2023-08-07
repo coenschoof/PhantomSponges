@@ -26,20 +26,23 @@ class EarlyStopping:
         self.current_dir = current_dir
         self.best_patch = None
 
-
+    #wordt elke keer bij epoch 0 gecalld
     def __call__(self, val_loss, patch, epoch):
 
         score = val_loss
 
+        #als de beste val_loss nog niet is vastgelegd, doe dat nu
         if self.best_score is None:
             self.best_score = score
             self.save_checkpoint(val_loss, patch, epoch)
+        #Indien de huidige val_loss hoger is dan de eerder opgeslagen val_loss, 7 kansen geven
         elif score >= self.best_score + self.delta:
             self.counter += 1
             print(f'EarlyStopping counter: {self.counter} out of {self.patience}', flush=True)
             if self.counter >= self.patience:
                 print("Training stopped - early stopping")
                 return True
+        #Indien huidige val_loss lager is dan de beste, vergang dan de beste
         else:
             self.best_score = score
             self.save_checkpoint(val_loss, patch, epoch)
