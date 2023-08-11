@@ -390,7 +390,7 @@ class UAPPhantomSponge:
             #now we have an idx that says "False" due to some bike having too high of a confwaarde, but we're looking at cars
 
             #Dit is niet weird, die 0.3 kan betekenen dat er daadwerkelijk een bicycle gezien is in de foto, 
-            #dus deze bb wordt genegeerd (False in "conf < conf_thres" mask). Om niet gefilterd te worden door F2 moet
+            #dus deze bb wordt genegeerd (False in "conf < conf_thres" mask). Om F2 te 'passeren' moet
             #de max class conf hoger zijn dan 0.25, dat is nu het geval met bicycle = 0.3. 
             #Het doel van deze hele functie is dat de bb niet weggefilterd wordt door F2, dus de hoogste max class conf moet > 0.25
             #ongeacht wat de hoogste class is. 
@@ -403,12 +403,14 @@ class UAPPhantomSponge:
             #the car's 0.3 is too high, so we don't save the car's 0.3
         #[0.2, 0.23] #the highest in this list must be lower than 0.25, so it returns True due to the bicycle being 0.23
             #the bicycle's 0.23 is low enough, so we save the car's 0.2
-        print("perc. of BB CSs < 0.25 (should decrease while training UAP)", len(all_target_conf[conf < conf_thres]) / len(all_target_conf.view(-1)))
+
+        #print("BB CSs == 0.25", len(all_target_conf[conf == conf_thres]))
         under_thr_target_conf = all_target_conf[conf < conf_thres] #size is rondom torch.Size([200000])
 
         #print(len(conf.view(-1))) #8 * 25200 = 201600
         #print(len(conf.view(-1)[conf.view(-1) > conf_thres])) #kan verschillen, vaak rond de 500-1000
         #print(len(output_patch)) #8
+
         #shows the batch average of the number of bbs that go over the conf_thres of 0.25
         #Higher conf_avg, the better. In that case, NMS has more work to do, which is what we want
         conf_avg = len(conf.view(-1)[conf.view(-1) > conf_thres]) / len(output_patch)
@@ -417,18 +419,39 @@ class UAPPhantomSponge:
         zeros = torch.zeros(under_thr_target_conf.size()).to(output_patch.device) #size is rondom torch.Size([200000])
         zeros.requires_grad = True
         #lager is beter
-        #neem 0.25 - confwaarde (confwaarde is altijd lager dan 0.25)
+        #neem 0.25 - confwaarde (confwaarde is altijd lager dan 0.25 omdat alles erboven al False kreeg in de mask)
             #confwaarde van 0.25 en hoger is wenselijk, dan is de loss 0
             #te lage confwaarde zoals 0.10 betekent: 0.25 - 0.10 = 0.15, hogere loss
-            #confwaarde moet dus boven de threshold zitten
+            #confwaarde moet dus in de buurt van de threshold zitten
             #kortom moedigt de loss functie je aan om te lage confwaarden hoger te maken
 
-            #0.25 - 0.24 = 0.01, klein beetje loss, volgende iteratie zorgt ervoro dat 0.24 dichter bij 0.25 zit
-            #0.25 - 0.25 = 0, geen loss, perfect
+            #0.25 - 0.24 = 0.01, klein beetje loss, volgende iteratie zorgt ervoor dat 0.24 dichter bij 0.25 zit
+            #0.25 - 0.25 = 0, geen loss, perfect (wel onmogelijk, want de patch regel zet alles onder 0.25 op true, 0.24999999 zou wel kunnen bijv.)
             #0.25 - 0.26 = 0, 0.26 komt hier nooit aan, die is al weggefilterd
 
+            #HET LIJKT DUS ALSOF JE OPTIMALISEERT ZODAT DE CONFWAARDE 0.25 NADERT, MAAR NIET EROVERHEEN GAAT
+            #MOET HET, OM F2 TE PASSEREN, NIET HOGER ZIJN DAN 0.25?
+
+            # domein van alle waarden die we omhoog willen hebben zijn [0, 0.25)
+            # onze loss functie is max(0.25 - x, 0)
+            # de derivative van de loss functie is -1 wanneer x < 0.25
+            # -1 is dus onze gradient wanneer conf te laag is 
+            # We optimaliseren totdat we een nulpunt bereiken
+            # Na een tijd kunenn we een score hebben van 0.24999999
+            # Deze wordt dan bijv geoptimaliseerd naar 2.5
+            # Dat betekent dat bij de volgende iteratie deze BB CS False wordt; geen optimalisatie meer dus
+            # Maar als hij precies 2.5 is, is het nog wel te laag voor de NMS
+            # Dit gebeurt in de praktijk echter nooit, hij zit er altijd boven of onder.
+
+            # Om de vraag te beantwoorden, je optimaliseert inderdaad zodanig dat het 0.25 nadert,
+            # Maar uit de praktijk lijkt het dat de increase in CS de 0.25 overshoot
+            # Dus wanneer de gradient van de loss verwerkt wordt in de UAP,
+            # gaat de CS van 0.24999999 naar bijv 0.25000001. 
+            # Hierdoor wordt hij eerder in deze functie op False gezet.
+            # CS == 0.25 kan in theorie voorkomen, maar gebeurt niet in praktijk
+
         x3 = torch.maximum(conf_thres - under_thr_target_conf, zeros) #eq. 3 in paper #size is rondom torch.Size([200000])
-        #±200000 / 201600
+        #±200000 gedeeld door 201600
         mean_conf = torch.sum(x3, dim=0) / (output_patch.size()[0] * output_patch.size()[1])
 
         return mean_conf
