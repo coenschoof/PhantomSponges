@@ -55,7 +55,7 @@ class SplitDatasetCombined_BDD:
         #sampler = gives random permutation of 8 train_indices each time train_indices is called
         train_loader = DataLoader(self.dataset_train, batch_size=batch_size,  sampler=train_sampler, collate_fn=self.collate_fn)
         validation_loader = DataLoader(self.dataset_val, batch_size=batch_size, sampler=valid_sampler, collate_fn=self.collate_fn)
-        test_loader = DataLoader(self.dataset_test,  sampler=test_sampler, collate_fn=self.collate_fn)
+        test_loader = DataLoader(self.dataset_test, batch_size=1, sampler=test_sampler, collate_fn=self.collate_fn)
 
         return train_loader, validation_loader, test_loader
 
@@ -122,6 +122,7 @@ class CustomDataset(Dataset):
 
         #transformeer de data zodat het 640x640 is
         transformed = self.transform(image=image, bboxes=label[:, 1:], class_labels=label[:, 0])
+
         image = transformed['image'].float()
         bboxes = transformed['bboxes']
         labels = transformed['class_labels']
