@@ -1,0 +1,3 @@
+[submodule "local_yolos/yolov8"]
+	path = local_yolos/yolov8
+	url = https://github.com/ultralytics/ultralytics.git
