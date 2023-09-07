@@ -8,7 +8,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-from ultralytics.utils import TQDM
+from local_yolos.yolov8.ultralytics.utils import TQDM
 
 
 def coco91_to_coco80_class():
@@ -57,7 +57,7 @@ def convert_coco(labels_dir='../coco/annotations/', use_segments=False, use_keyp
 
     Example:
         ```python
-        from ultralytics.data.converter import convert_coco
+        from local_yolos.yolov8.ultralytics.data.converter import convert_coco
 
         convert_coco('../datasets/coco/annotations/', use_segments=True, use_keypoints=False, cls91to80=True)
         ```
@@ -153,7 +153,7 @@ def convert_dota_to_yolo_obb(dota_root_path: str):
 
     Example:
         ```python
-        from ultralytics.data.converter import convert_dota_to_yolo_obb
+        from local_yolos.yolov8.ultralytics.data.converter import convert_dota_to_yolo_obb
 
         convert_dota_to_yolo_obb('path/to/DOTA')
         ```

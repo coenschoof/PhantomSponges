@@ -23,8 +23,8 @@ from copy import deepcopy
 import numpy as np
 
 from ultralytics import YOLO
-from ultralytics.cfg import get_cfg, get_save_dir
-from ultralytics.utils import DEFAULT_CFG, LOGGER, callbacks, colorstr, yaml_print, yaml_save
+from local_yolos.yolov8.ultralytics.cfg import get_cfg, get_save_dir
+from local_yolos.yolov8.ultralytics.utils import DEFAULT_CFG, LOGGER, callbacks, colorstr, yaml_print, yaml_save
 
 
 class Tuner:

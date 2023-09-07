@@ -8,8 +8,8 @@ from copy import deepcopy
 import numpy as np
 import torch
 
-from ultralytics.utils import DEFAULT_CFG, LOGGER, colorstr
-from ultralytics.utils.torch_utils import profile
+from local_yolos.yolov8.ultralytics.utils import DEFAULT_CFG, LOGGER, colorstr
+from local_yolos.yolov8.ultralytics.utils.torch_utils import profile
 
 
 def check_train_batch_size(model, imgsz=640, amp=True):

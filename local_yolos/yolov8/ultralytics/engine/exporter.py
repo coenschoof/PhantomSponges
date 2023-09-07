@@ -61,19 +61,19 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from ultralytics.cfg import get_cfg
-from ultralytics.data.dataset import YOLODataset
-from ultralytics.data.utils import check_det_dataset
-from ultralytics.nn.autobackend import check_class_names
-from ultralytics.nn.modules import C2f, Detect, RTDETRDecoder
-from ultralytics.nn.tasks import DetectionModel, SegmentationModel
-from ultralytics.utils import (ARM64, DEFAULT_CFG, LINUX, LOGGER, MACOS, ROOT, WINDOWS, __version__, callbacks,
+from local_yolos.yolov8.ultralytics.cfg import get_cfg
+from local_yolos.yolov8.ultralytics.data.dataset import YOLODataset
+from local_yolos.yolov8.ultralytics.data.utils import check_det_dataset
+from local_yolos.yolov8.ultralytics.nn.autobackend import check_class_names
+from local_yolos.yolov8.ultralytics.nn.modules import C2f, Detect, RTDETRDecoder
+from local_yolos.yolov8.ultralytics.nn.tasks import DetectionModel, SegmentationModel
+from local_yolos.yolov8.ultralytics.utils import (ARM64, DEFAULT_CFG, LINUX, LOGGER, MACOS, ROOT, WINDOWS, __version__, callbacks,
                                colorstr, get_default_args, yaml_save)
-from ultralytics.utils.checks import check_imgsz, check_requirements, check_version
-from ultralytics.utils.downloads import attempt_download_asset, get_github_assets
-from ultralytics.utils.files import file_size, spaces_in_path
-from ultralytics.utils.ops import Profile
-from ultralytics.utils.torch_utils import get_latest_opset, select_device, smart_inference_mode
+from local_yolos.yolov8.ultralytics.utils.checks import check_imgsz, check_requirements, check_version
+from local_yolos.yolov8.ultralytics.utils.downloads import attempt_download_asset, get_github_assets
+from local_yolos.yolov8.ultralytics.utils.files import file_size, spaces_in_path
+from local_yolos.yolov8.ultralytics.utils.ops import Profile
+from local_yolos.yolov8.ultralytics.utils.torch_utils import get_latest_opset, select_device, smart_inference_mode
 
 
 def export_formats():

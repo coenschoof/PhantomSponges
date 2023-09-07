@@ -5,11 +5,11 @@ import torch
 import torch.nn.functional as F
 import torchvision
 
-from ultralytics.data.augment import LetterBox
-from ultralytics.engine.predictor import BasePredictor
-from ultralytics.engine.results import Results
-from ultralytics.utils import DEFAULT_CFG, ops
-from ultralytics.utils.torch_utils import select_device
+from local_yolos.yolov8.ultralytics.data.augment import LetterBox
+from local_yolos.yolov8.ultralytics.engine.predictor import BasePredictor
+from local_yolos.yolov8.ultralytics.engine.results import Results
+from local_yolos.yolov8.ultralytics.utils import DEFAULT_CFG, ops
+from local_yolos.yolov8.ultralytics.utils.torch_utils import select_device
 
 from .amg import (batch_iterator, batched_mask_to_box, build_all_layer_point_grids, calculate_stability_score,
                   generate_crop_boxes, is_box_near_crop_edge, remove_small_regions, uncrop_boxes_xyxy, uncrop_masks)

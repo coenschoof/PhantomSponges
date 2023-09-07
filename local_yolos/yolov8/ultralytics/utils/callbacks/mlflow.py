@@ -1,6 +1,6 @@
 # Ultralytics YOLO 🚀, AGPL-3.0 license
 
-from ultralytics.utils import LOGGER, ROOT, SETTINGS, TESTS_RUNNING, colorstr
+from local_yolos.yolov8.ultralytics.utils import LOGGER, ROOT, SETTINGS, TESTS_RUNNING, colorstr
 
 try:
     assert not TESTS_RUNNING  # do not log pytest

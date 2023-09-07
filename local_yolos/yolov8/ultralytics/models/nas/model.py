@@ -15,8 +15,8 @@ from pathlib import Path
 
 import torch
 
-from ultralytics.engine.model import Model
-from ultralytics.utils.torch_utils import model_info, smart_inference_mode
+from local_yolos.yolov8.ultralytics.engine.model import Model
+from local_yolos.yolov8.ultralytics.utils.torch_utils import model_info, smart_inference_mode
 
 from .predict import NASPredictor
 from .val import NASValidator

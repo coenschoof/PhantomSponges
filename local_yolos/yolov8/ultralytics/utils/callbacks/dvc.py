@@ -1,6 +1,6 @@
 # Ultralytics YOLO 🚀, AGPL-3.0 license
 
-from ultralytics.utils import LOGGER, SETTINGS, TESTS_RUNNING
+from local_yolos.yolov8.ultralytics.utils import LOGGER, SETTINGS, TESTS_RUNNING
 
 try:
     assert not TESTS_RUNNING  # do not log pytest
@@ -103,7 +103,7 @@ def on_fit_epoch_end(trainer):
             live.log_metric(metric, value)
 
         if trainer.epoch == 0:
-            from ultralytics.utils.torch_utils import model_info_for_loggers
+            from local_yolos.yolov8.ultralytics.utils.torch_utils import model_info_for_loggers
             for metric, value in model_info_for_loggers(trainer).items():
                 live.log_metric(metric, value, plot=False)
 

@@ -3,13 +3,13 @@
 import torch
 import torchvision
 
-from ultralytics.data import ClassificationDataset, build_dataloader
-from ultralytics.engine.trainer import BaseTrainer
-from ultralytics.models import yolo
-from ultralytics.nn.tasks import ClassificationModel, attempt_load_one_weight
-from ultralytics.utils import DEFAULT_CFG, LOGGER, RANK, colorstr
-from ultralytics.utils.plotting import plot_images, plot_results
-from ultralytics.utils.torch_utils import is_parallel, strip_optimizer, torch_distributed_zero_first
+from local_yolos.yolov8.ultralytics.data import ClassificationDataset, build_dataloader
+from local_yolos.yolov8.ultralytics.engine.trainer import BaseTrainer
+from local_yolos.yolov8.ultralytics.models import yolo
+from local_yolos.yolov8.ultralytics.nn.tasks import ClassificationModel, attempt_load_one_weight
+from local_yolos.yolov8.ultralytics.utils import DEFAULT_CFG, LOGGER, RANK, colorstr
+from local_yolos.yolov8.ultralytics.utils.plotting import plot_images, plot_results
+from local_yolos.yolov8.ultralytics.utils.torch_utils import is_parallel, strip_optimizer, torch_distributed_zero_first
 
 
 class ClassificationTrainer(BaseTrainer):
@@ -21,7 +21,7 @@ class ClassificationTrainer(BaseTrainer):
 
     Example:
         ```python
-        from ultralytics.models.yolo.classify import ClassificationTrainer
+        from local_yolos.yolov8.ultralytics.models.yolo.classify import ClassificationTrainer
 
         args = dict(model='yolov8n-cls.pt', data='imagenet10', epochs=3)
         trainer = ClassificationTrainer(overrides=args)

@@ -8,7 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from typing import Dict, List, Union
 
-from ultralytics.utils import (ASSETS, DEFAULT_CFG, DEFAULT_CFG_DICT, DEFAULT_CFG_PATH, LOGGER, RANK, SETTINGS,
+from local_yolos.yolov8.ultralytics.utils import (ASSETS, DEFAULT_CFG, DEFAULT_CFG_DICT, DEFAULT_CFG_PATH, LOGGER, RANK, SETTINGS,
                                SETTINGS_YAML, IterableSimpleNamespace, __version__, checks, colorstr, deprecation_warn,
                                yaml_load, yaml_print)
 
@@ -152,7 +152,7 @@ def get_save_dir(args, name=None):
     if getattr(args, 'save_dir', None):
         save_dir = args.save_dir
     else:
-        from ultralytics.utils.files import increment_path
+        from local_yolos.yolov8.ultralytics.utils.files import increment_path
 
         project = args.project or Path(SETTINGS['runs_dir']) / args.task
         name = name or args.name or f'{args.mode}'

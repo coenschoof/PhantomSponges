@@ -7,9 +7,9 @@ from time import sleep
 
 import requests
 
-from ultralytics.hub.utils import HUB_API_ROOT, HUB_WEB_ROOT, PREFIX, smart_request
-from ultralytics.utils import LOGGER, __version__, checks, emojis, is_colab, threaded
-from ultralytics.utils.errors import HUBModelError
+from local_yolos.yolov8.ultralytics.hub.utils import HUB_API_ROOT, HUB_WEB_ROOT, PREFIX, smart_request
+from local_yolos.yolov8.ultralytics.utils import LOGGER, __version__, checks, emojis, is_colab, threaded
+from local_yolos.yolov8.ultralytics.utils.errors import HUBModelError
 
 AGENT_NAME = f'python-{__version__}-colab' if is_colab() else f'python-{__version__}-local'
 
@@ -47,7 +47,7 @@ class HUBTrainingSession:
             ConnectionError: If connecting with global API key is not supported.
         """
 
-        from ultralytics.hub.auth import Auth
+        from local_yolos.yolov8.ultralytics.hub.auth import Auth
 
         # Parse input
         if url.startswith(f'{HUB_WEB_ROOT}/models/'):

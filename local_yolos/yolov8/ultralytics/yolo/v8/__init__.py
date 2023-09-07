@@ -1,7 +1,7 @@
 import importlib
 import sys
 
-from ultralytics.utils import LOGGER
+from local_yolos.yolov8.ultralytics.utils import LOGGER
 
 # Set modules in sys.modules under their old name
 sys.modules['ultralytics.yolo.v8'] = importlib.import_module('ultralytics.models.yolo')

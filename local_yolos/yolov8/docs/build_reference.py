@@ -11,7 +11,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
-from ultralytics.utils import ROOT
+from local_yolos.yolov8.ultralytics.utils import ROOT
 
 NEW_YAML_DIR = ROOT.parent
 CODE_DIR = ROOT

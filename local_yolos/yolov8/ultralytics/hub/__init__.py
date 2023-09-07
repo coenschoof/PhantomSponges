@@ -2,10 +2,10 @@
 
 import requests
 
-from ultralytics.data.utils import HUBDatasetStats
-from ultralytics.hub.auth import Auth
-from ultralytics.hub.utils import HUB_API_ROOT, HUB_WEB_ROOT, PREFIX
-from ultralytics.utils import LOGGER, SETTINGS
+from local_yolos.yolov8.ultralytics.data.utils import HUBDatasetStats
+from local_yolos.yolov8.ultralytics.hub.auth import Auth
+from local_yolos.yolov8.ultralytics.hub.utils import HUB_API_ROOT, HUB_WEB_ROOT, PREFIX
+from local_yolos.yolov8.ultralytics.utils import LOGGER, SETTINGS
 
 
 def login(api_key=''):
@@ -52,7 +52,7 @@ def reset_model(model_id=''):
 
 def export_fmts_hub():
     """Returns a list of HUB-supported export formats."""
-    from ultralytics.engine.exporter import export_formats
+    from local_yolos.yolov8.ultralytics.engine.exporter import export_formats
     return list(export_formats()['Argument'][1:]) + ['ultralytics_tflite', 'ultralytics_coreml']
 
 
@@ -89,7 +89,7 @@ def check_dataset(path='', task='detect'):
 
     Example:
         ```python
-        from ultralytics.hub import check_dataset
+        from local_yolos.yolov8.ultralytics.hub import check_dataset
 
         check_dataset('path/to/coco8.zip', task='detect')  # detect dataset
         check_dataset('path/to/coco8-seg.zip', task='segment')  # segment dataset

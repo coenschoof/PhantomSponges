@@ -15,9 +15,9 @@ import torch
 import torch.nn as nn
 from PIL import Image
 
-from ultralytics.utils import ARM64, LINUX, LOGGER, ROOT, yaml_load
-from ultralytics.utils.checks import check_requirements, check_suffix, check_version, check_yaml
-from ultralytics.utils.downloads import attempt_download_asset, is_url
+from local_yolos.yolov8.ultralytics.utils import ARM64, LINUX, LOGGER, ROOT, yaml_load
+from local_yolos.yolov8.ultralytics.utils.checks import check_requirements, check_suffix, check_version, check_yaml
+from local_yolos.yolov8.ultralytics.utils.downloads import attempt_download_asset, is_url
 
 
 def check_class_names(names):
@@ -108,7 +108,7 @@ class AutoBackend(nn.Module):
             self.model = model  # explicitly assign for to(), cpu(), cuda(), half()
             pt = True
         elif pt:  # PyTorch
-            from ultralytics.nn.tasks import attempt_load_weights
+            from local_yolos.yolov8.ultralytics.nn.tasks import attempt_load_weights
             model = attempt_load_weights(weights if isinstance(weights, list) else w,
                                          device=device,
                                          inplace=True,
@@ -208,7 +208,7 @@ class AutoBackend(nn.Module):
             LOGGER.info(f'Loading {w} for TensorFlow GraphDef inference...')
             import tensorflow as tf
 
-            from ultralytics.engine.exporter import gd_outputs
+            from local_yolos.yolov8.ultralytics.engine.exporter import gd_outputs
 
             def wrap_frozen_graph(gd, inputs, outputs):
                 """Wrap frozen graphs for deployment."""
@@ -281,7 +281,7 @@ class AutoBackend(nn.Module):
             """
             raise NotImplementedError('Triton Inference Server is not currently supported.')
         else:
-            from ultralytics.engine.exporter import export_formats
+            from local_yolos.yolov8.ultralytics.engine.exporter import export_formats
             raise TypeError(f"model='{w}' is not a supported model format. "
                             'See https://docs.ultralytics.com/modes/predict for help.'
                             f'\n\n{export_formats()}')
@@ -365,7 +365,7 @@ class AutoBackend(nn.Module):
                 raise TypeError('Ultralytics only supports inference of non-pipelined CoreML models exported with '
                                 f"'nms=False', but 'model={w}' has an NMS pipeline created by an 'nms=True' export.")
                 # TODO: CoreML NMS inference handling
-                # from ultralytics.utils.ops import xywh2xyxy
+                # from local_yolos.yolov8.ultralytics.utils.ops import xywh2xyxy
                 # box = xywh2xyxy(y['coordinates'] * [[w, h, w, h]])  # xyxy pixels
                 # conf, cls = y['confidence'].max(1), y['confidence'].argmax(1).astype(np.float32)
                 # y = np.concatenate((box, conf.reshape(-1, 1), cls.reshape(-1, 1)), 1)
@@ -481,7 +481,7 @@ class AutoBackend(nn.Module):
         """
         # Return model type from model path, i.e. path='path/to/model.onnx' -> type=onnx
         # types = [pt, jit, onnx, xml, engine, coreml, saved_model, pb, tflite, edgetpu, tfjs, paddle]
-        from ultralytics.engine.exporter import export_formats
+        from local_yolos.yolov8.ultralytics.engine.exporter import export_formats
         sf = list(export_formats().Suffix)  # export suffixes
         if not is_url(p, check=False) and not isinstance(p, str):
             check_suffix(p, sf)  # checks

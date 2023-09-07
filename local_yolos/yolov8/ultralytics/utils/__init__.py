@@ -280,7 +280,7 @@ class ThreadingLocked:
 
     Example:
         ```python
-        from ultralytics.utils import ThreadingLocked
+        from local_yolos.yolov8.ultralytics.utils import ThreadingLocked
 
         @ThreadingLocked()
         def my_function():
@@ -778,8 +778,8 @@ class SettingsManager(dict):
         import copy
         import hashlib
 
-        from ultralytics.utils.checks import check_version
-        from ultralytics.utils.torch_utils import torch_distributed_zero_first
+        from local_yolos.yolov8.ultralytics.utils.checks import check_version
+        from local_yolos.yolov8.ultralytics.utils.torch_utils import torch_distributed_zero_first
 
         git_dir = get_git_dir()
         root = git_dir or Path()

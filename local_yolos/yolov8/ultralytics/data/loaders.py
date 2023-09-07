@@ -15,9 +15,9 @@ import requests
 import torch
 from PIL import Image
 
-from ultralytics.data.utils import IMG_FORMATS, VID_FORMATS
-from ultralytics.utils import LOGGER, is_colab, is_kaggle, ops
-from ultralytics.utils.checks import check_requirements
+from local_yolos.yolov8.ultralytics.data.utils import IMG_FORMATS, VID_FORMATS
+from local_yolos.yolov8.ultralytics.utils import LOGGER, is_colab, is_kaggle, ops
+from local_yolos.yolov8.ultralytics.utils.checks import check_requirements
 
 
 @dataclass

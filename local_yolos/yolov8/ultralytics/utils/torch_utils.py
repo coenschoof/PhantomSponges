@@ -16,8 +16,8 @@ import torch.distributed as dist
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, RANK, __version__
-from ultralytics.utils.checks import check_version
+from local_yolos.yolov8.ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, RANK, __version__
+from local_yolos.yolov8.ultralytics.utils.checks import check_version
 
 try:
     import thop
@@ -212,7 +212,7 @@ def model_info_for_loggers(trainer):
          'model/speed_PyTorch(ms)': 18.755}
     """
     if trainer.args.profile:  # profile ONNX and TensorRT times
-        from ultralytics.utils.benchmarks import ProfileModels
+        from local_yolos.yolov8.ultralytics.utils.benchmarks import ProfileModels
         results = ProfileModels([trainer.last], device=trainer.device).profile()[0]
         results.pop('model/name')
     else:  # only return PyTorch times from most recent validation
@@ -389,7 +389,7 @@ def strip_optimizer(f: Union[str, Path] = 'best.pt', s: str = '') -> None:
     Example:
         ```python
         from pathlib import Path
-        from ultralytics.utils.torch_utils import strip_optimizer
+        from local_yolos.yolov8.ultralytics.utils.torch_utils import strip_optimizer
 
         for f in Path('path/to/weights').rglob('*.pt'):
             strip_optimizer(f)
@@ -430,7 +430,7 @@ def profile(input, ops, n=10, device=None):
 
     Example:
         ```python
-        from ultralytics.utils.torch_utils import profile
+        from local_yolos.yolov8.ultralytics.utils.torch_utils import profile
 
         input = torch.randn(16, 3, 640, 640)
         m1 = lambda x: x * torch.sigmoid(x)

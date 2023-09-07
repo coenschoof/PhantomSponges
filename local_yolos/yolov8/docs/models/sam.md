@@ -89,7 +89,7 @@ The Segment Anything Model can be employed for a multitude of downstream tasks t
     === "Prompt inference"
 
         ```python
-        from ultralytics.models.sam import Predictor as SAMPredictor
+        from local_yolos.yolov8.ultralytics.models.sam import Predictor as SAMPredictor
 
         # Create SAMPredictor
         overrides = dict(conf=0.25, task='segment', mode='predict', imgsz=1024, model="mobile_sam.pt")
@@ -110,7 +110,7 @@ The Segment Anything Model can be employed for a multitude of downstream tasks t
     === "Segment everything"
 
         ```python
-        from ultralytics.models.sam import Predictor as SAMPredictor
+        from local_yolos.yolov8.ultralytics.models.sam import Predictor as SAMPredictor
 
         # Create SAMPredictor
         overrides = dict(conf=0.25, task='segment', mode='predict', imgsz=1024, model="mobile_sam.pt")
@@ -192,7 +192,7 @@ To auto-annotate your dataset with the Ultralytics framework, use the `auto_anno
 
     === "Python"
         ```python
-        from ultralytics.data.annotator import auto_annotate
+        from local_yolos.yolov8.ultralytics.data.annotator import auto_annotate
         
         auto_annotate(data="path/to/images", det_model="yolov8x.pt", sam_model='sam_b.pt')
         ```

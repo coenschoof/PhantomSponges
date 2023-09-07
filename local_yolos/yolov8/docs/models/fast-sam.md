@@ -45,7 +45,7 @@ To perform object detection on an image, use the `predict` method as shown below
     === "Python"
         ```python
         from ultralytics import FastSAM
-        from ultralytics.models.fastsam import FastSAMPrompt
+        from local_yolos.yolov8.ultralytics.models.fastsam import FastSAMPrompt
 
         # Define an inference source
         source = 'path/to/bus.jpg'

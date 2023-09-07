@@ -2,7 +2,7 @@
 """
 Ultralytics modules. Visualize with:
 
-from ultralytics.nn.modules import *
+from local_yolos.yolov8.ultralytics.nn.modules import *
 import torch
 import os
 

@@ -2,8 +2,8 @@
 
 import requests
 
-from ultralytics.hub.utils import HUB_API_ROOT, HUB_WEB_ROOT, PREFIX, request_with_credentials
-from ultralytics.utils import LOGGER, SETTINGS, emojis, is_colab
+from local_yolos.yolov8.ultralytics.hub.utils import HUB_API_ROOT, HUB_WEB_ROOT, PREFIX, request_with_credentials
+from local_yolos.yolov8.ultralytics.utils import LOGGER, SETTINGS, emojis, is_colab
 
 API_KEY_URL = f'{HUB_WEB_ROOT}/settings?tab=api+keys'
 

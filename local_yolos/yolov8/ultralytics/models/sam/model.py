@@ -5,8 +5,8 @@ SAM model interface
 
 from pathlib import Path
 
-from ultralytics.engine.model import Model
-from ultralytics.utils.torch_utils import model_info
+from local_yolos.yolov8.ultralytics.engine.model import Model
+from local_yolos.yolov8.ultralytics.utils.torch_utils import model_info
 
 from .build import build_sam
 from .predict import Predictor

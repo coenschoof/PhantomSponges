@@ -3,7 +3,7 @@
 Benchmark a YOLO model formats for speed and accuracy
 
 Usage:
-    from ultralytics.utils.benchmarks import ProfileModels, benchmark
+    from local_yolos.yolov8.ultralytics.utils.benchmarks import ProfileModels, benchmark
     ProfileModels(['yolov8n.yaml', 'yolov8s.yaml']).profile()
     benchmark(model='yolov8n.pt', imgsz=160)
 
@@ -34,12 +34,12 @@ import numpy as np
 import torch.cuda
 
 from ultralytics import YOLO
-from ultralytics.cfg import TASK2DATA, TASK2METRIC
-from ultralytics.engine.exporter import export_formats
-from ultralytics.utils import ASSETS, LINUX, LOGGER, MACOS, SETTINGS, TQDM
-from ultralytics.utils.checks import check_requirements, check_yolo
-from ultralytics.utils.files import file_size
-from ultralytics.utils.torch_utils import select_device
+from local_yolos.yolov8.ultralytics.cfg import TASK2DATA, TASK2METRIC
+from local_yolos.yolov8.ultralytics.engine.exporter import export_formats
+from local_yolos.yolov8.ultralytics.utils import ASSETS, LINUX, LOGGER, MACOS, SETTINGS, TQDM
+from local_yolos.yolov8.ultralytics.utils.checks import check_requirements, check_yolo
+from local_yolos.yolov8.ultralytics.utils.files import file_size
+from local_yolos.yolov8.ultralytics.utils.torch_utils import select_device
 
 
 def benchmark(model=Path(SETTINGS['weights_dir']) / 'yolov8n.pt',
@@ -69,7 +69,7 @@ def benchmark(model=Path(SETTINGS['weights_dir']) / 'yolov8n.pt',
 
     Example:
         ```python
-        from ultralytics.utils.benchmarks import benchmark
+        from local_yolos.yolov8.ultralytics.utils.benchmarks import benchmark
 
         benchmark(model='yolov8n.pt', imgsz=640)
         ```
@@ -169,7 +169,7 @@ class ProfileModels:
 
     Example:
         ```python
-        from ultralytics.utils.benchmarks import ProfileModels
+        from local_yolos.yolov8.ultralytics.utils.benchmarks import ProfileModels
 
         ProfileModels(['yolov8n.yaml', 'yolov8s.yaml'], imgsz=640).profile()
         ```

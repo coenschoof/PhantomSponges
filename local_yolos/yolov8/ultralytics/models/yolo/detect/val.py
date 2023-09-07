@@ -6,13 +6,13 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from ultralytics.data import build_dataloader, build_yolo_dataset, converter
-from ultralytics.engine.validator import BaseValidator
-from ultralytics.utils import LOGGER, ops
-from ultralytics.utils.checks import check_requirements
-from ultralytics.utils.metrics import ConfusionMatrix, DetMetrics, box_iou
-from ultralytics.utils.plotting import output_to_target, plot_images
-from ultralytics.utils.torch_utils import de_parallel
+from local_yolos.yolov8.ultralytics.data import build_dataloader, build_yolo_dataset, converter
+from local_yolos.yolov8.ultralytics.engine.validator import BaseValidator
+from local_yolos.yolov8.ultralytics.utils import LOGGER, ops
+from local_yolos.yolov8.ultralytics.utils.checks import check_requirements
+from local_yolos.yolov8.ultralytics.utils.metrics import ConfusionMatrix, DetMetrics, box_iou
+from local_yolos.yolov8.ultralytics.utils.plotting import output_to_target, plot_images
+from local_yolos.yolov8.ultralytics.utils.torch_utils import de_parallel
 
 
 class DetectionValidator(BaseValidator):
@@ -21,7 +21,7 @@ class DetectionValidator(BaseValidator):
 
     Example:
         ```python
-        from ultralytics.models.yolo.detect import DetectionValidator
+        from local_yolos.yolov8.ultralytics.models.yolo.detect import DetectionValidator
 
         args = dict(model='yolov8n.pt', data='coco8.yaml')
         validator = DetectionValidator(args=args)

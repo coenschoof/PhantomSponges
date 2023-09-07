@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 from torch.nn.init import constant_, xavier_uniform_
 
-from ultralytics.utils.tal import TORCH_1_10, dist2bbox, make_anchors
+from local_yolos.yolov8.ultralytics.utils.tal import TORCH_1_10, dist2bbox, make_anchors
 
 from .block import DFL, Proto
 from .conv import Conv
@@ -229,7 +229,7 @@ class RTDETRDecoder(nn.Module):
         self._reset_parameters()
 
     def forward(self, x, batch=None):
-        from ultralytics.models.utils.ops import get_cdn_group
+        from local_yolos.yolov8.ultralytics.models.utils.ops import get_cdn_group
 
         # input projection and embedding
         feats, shapes = self._get_encoder_input(x)

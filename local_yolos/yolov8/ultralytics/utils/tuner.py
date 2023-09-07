@@ -2,8 +2,8 @@
 
 import subprocess
 
-from ultralytics.cfg import TASK2DATA, TASK2METRIC
-from ultralytics.utils import DEFAULT_CFG_DICT, LOGGER, NUM_THREADS
+from local_yolos.yolov8.ultralytics.cfg import TASK2DATA, TASK2METRIC
+from local_yolos.yolov8.ultralytics.utils import DEFAULT_CFG_DICT, LOGGER, NUM_THREADS
 
 
 def run_ray_tune(model,

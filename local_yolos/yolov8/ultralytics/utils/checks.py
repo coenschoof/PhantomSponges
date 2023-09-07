@@ -20,7 +20,7 @@ import requests
 import torch
 from matplotlib import font_manager
 
-from ultralytics.utils import (ASSETS, AUTOINSTALL, LINUX, LOGGER, ONLINE, ROOT, USER_CONFIG_DIR, ThreadingLocked,
+from local_yolos.yolov8.ultralytics.utils import (ASSETS, AUTOINSTALL, LINUX, LOGGER, ONLINE, ROOT, USER_CONFIG_DIR, ThreadingLocked,
                                TryExcept, clean_url, colorstr, downloads, emojis, is_colab, is_docker, is_jupyter,
                                is_kaggle, is_online, is_pip_package, url2file)
 
@@ -241,7 +241,7 @@ def check_requirements(requirements=ROOT.parent / 'requirements.txt', exclude=()
 
     Example:
         ```python
-        from ultralytics.utils.checks import check_requirements
+        from local_yolos.yolov8.ultralytics.utils.checks import check_requirements
 
         # Check a requirements.txt file
         check_requirements('path/to/requirements.txt')
@@ -404,7 +404,7 @@ def check_imshow(warn=False):
 
 def check_yolo(verbose=True, device=''):
     """Return a human-readable YOLO software and hardware summary."""
-    from ultralytics.utils.torch_utils import select_device
+    from local_yolos.yolov8.ultralytics.utils.torch_utils import select_device
 
     if is_jupyter():
         if check_requirements('wandb', install=False):
@@ -440,7 +440,7 @@ def check_amp(model):
     Example:
         ```python
         from ultralytics import YOLO
-        from ultralytics.utils.checks import check_amp
+        from local_yolos.yolov8.ultralytics.utils.checks import check_amp
 
         model = YOLO('yolov8n.pt').model.cuda()
         check_amp(model)

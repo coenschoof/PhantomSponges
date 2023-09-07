@@ -9,7 +9,7 @@ import numpy as np
 import torch
 from PIL import Image
 
-from ultralytics.utils import TQDM
+from local_yolos.yolov8.ultralytics.utils import TQDM
 
 
 class FastSAMPrompt:
@@ -23,7 +23,7 @@ class FastSAMPrompt:
         try:
             import clip  # for linear_assignment
         except ImportError:
-            from ultralytics.utils.checks import check_requirements
+            from local_yolos.yolov8.ultralytics.utils.checks import check_requirements
             check_requirements('git+https://github.com/openai/CLIP.git')
             import clip
         self.clip = clip
