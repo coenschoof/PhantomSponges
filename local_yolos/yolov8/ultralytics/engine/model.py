@@ -5,13 +5,13 @@ import sys
 from pathlib import Path
 from typing import Union
 
-from ultralytics.cfg import TASK2DATA, get_cfg, get_save_dir
-from ultralytics.hub.utils import HUB_WEB_ROOT
-from ultralytics.nn.tasks import attempt_load_one_weight, guess_model_task, nn, yaml_model_load
-from ultralytics.utils import ASSETS, DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, RANK, callbacks, emojis, yaml_load
-from ultralytics.utils.checks import check_file, check_imgsz, check_pip_update_available, check_yaml
-from ultralytics.utils.downloads import GITHUB_ASSETS_STEMS
-from ultralytics.utils.torch_utils import smart_inference_mode
+from local_yolos.yolov8.ultralytics.cfg import TASK2DATA, get_cfg, get_save_dir
+from local_yolos.yolov8.ultralytics.hub.utils import HUB_WEB_ROOT
+from local_yolos.yolov8.ultralytics.nn.tasks import attempt_load_one_weight, guess_model_task, nn, yaml_model_load
+from local_yolos.yolov8.ultralytics.utils import ASSETS, DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, RANK, callbacks, emojis, yaml_load
+from local_yolos.yolov8.ultralytics.utils.checks import check_file, check_imgsz, check_pip_update_available, check_yaml
+from local_yolos.yolov8.ultralytics.utils.downloads import GITHUB_ASSETS_STEMS
+from local_yolos.yolov8.ultralytics.utils.torch_utils import smart_inference_mode
 
 
 class Model:
@@ -78,7 +78,7 @@ class Model:
 
         # Check if Ultralytics HUB model from https://hub.ultralytics.com
         if self.is_hub_model(model):
-            from ultralytics.hub.session import HUBTrainingSession
+            from local_yolos.yolov8.ultralytics.hub.session import HUBTrainingSession
             self.session = HUBTrainingSession(model)
             model = self.session.model_file
 
@@ -251,7 +251,7 @@ class Model:
             (List[ultralytics.engine.results.Results]): The tracking results.
         """
         if not hasattr(self.predictor, 'trackers'):
-            from ultralytics.trackers import register_tracker
+            from local_yolos.yolov8.ultralytics.trackers import register_tracker
             register_tracker(self, persist)
         # ByteTrack-based method needs low confidence predictions as input
         kwargs['conf'] = kwargs.get('conf') or 0.1
@@ -285,7 +285,7 @@ class Model:
             **kwargs : Any other args accepted by the validators. To see all args check 'configuration' section in docs
         """
         self._check_is_pytorch_model()
-        from ultralytics.utils.benchmarks import benchmark
+        from local_yolos.yolov8.ultralytics.utils.benchmarks import benchmark
 
         custom = {'verbose': False}  # method defaults
         args = {**DEFAULT_CFG_DICT, **self.model.args, **custom, **kwargs, 'mode': 'benchmark'}
@@ -356,7 +356,7 @@ class Model:
         """
         self._check_is_pytorch_model()
         if use_ray:
-            from ultralytics.utils.tuner import run_ray_tune
+            from local_yolos.yolov8.ultralytics.utils.tuner import run_ray_tune
             return run_ray_tune(self, max_samples=iterations, *args, **kwargs)
         else:
             from .tuner import Tuner
