@@ -8,9 +8,8 @@ import torchvision
 from torchvision import transforms
 import torch.nn as nn
 
-from local_yolos.yolov8.ultralytics.utils.ops import non_max_suppression, xyxy2xywh
+from local_yolos.yolov5.utils.general import non_max_suppression, xyxy2xywh
 from attacks_tools.early_stopping_patch import EarlyStopping
-
 
 transt = transforms.ToTensor()
 transp = transforms.ToPILImage()
@@ -18,8 +17,9 @@ transp = transforms.ToPILImage()
 def get_model(name):
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     if name == 'yolov8':
-        from attacks_tools.attack_utils import CustomPredictor
-        model = CustomPredictor(overrides = dict(model='yolov8n.pt'))
+        from attacks_tools.attack_utils_2 import CustomPredictor
+        #model = CustomPredictor(overrides = dict(model='yolov8n.pt'))
+        model = CustomPredictor(weights='yolov8n.pt')
     elif name == 'yolov5':
         # taken from https://github.com/ultralytics/yolov5
         from local_yolos.yolov5.models.experimental import attempt_load
@@ -195,6 +195,8 @@ class UAPPhantomSponge:
           self.models.append(get_model('yolov4'))
         if 5 in models_vers:
           self.models.append(get_model('yolov5'))
+        if 8 in models_vers:
+          self.models.append(get_model('yolov8'))
 
         self.iter_eps = iter_eps
         self.penalty_regularizer = penalty_regularizer
@@ -408,8 +410,10 @@ class UAPPhantomSponge:
         #[0.2, 0.23] #the highest in this list must be lower than 0.25, so it returns True due to the bicycle being 0.23
             #the bicycle's 0.23 is low enough, so we save the car's 0.2
 
-        #print("BB CSs == 0.25", len(all_target_conf[conf == conf_thres]))
+        #ALLEMAAL GETALLEN VAN ROND DE 0
         under_thr_target_conf = all_target_conf[conf < conf_thres] #size is rondom torch.Size([200000])
+        print(len(under_thr_target_conf)) #    66965
+        print(all_target_conf.shape) #8x8400 = 67200 ,MERK OP DAT ER MAAR 235 DUS BOVEN DE 0.25 ZITTEN
 
         #print(len(conf.view(-1))) #8 * 25200 = 201600
         #print(len(conf.view(-1)[conf.view(-1) > conf_thres])) #kan verschillen, vaak rond de 500-1000
@@ -418,7 +422,7 @@ class UAPPhantomSponge:
         #shows the batch average of the number of bbs that go over the conf_thres of 0.25
         #Higher conf_avg, the better. In that case, NMS has more work to do, which is what we want
         conf_avg = len(conf.view(-1)[conf.view(-1) > conf_thres]) / len(output_patch)
-        #print(f"batch average number (/8) of bbs that will be passed to the NMS stage: {conf_avg}")
+        print(f"batch average number (/8) of bbs that will be passed to the NMS stage: {conf_avg}")
 
         zeros = torch.zeros(under_thr_target_conf.size()).to(output_patch.device) #size is rondom torch.Size([200000])
         zeros.requires_grad = True
@@ -453,9 +457,11 @@ class UAPPhantomSponge:
             # gaat de CS van 0.24999999 naar bijv 0.25000001. 
             # Hierdoor wordt hij eerder in deze functie op False gezet.
             # CS == 0.25 kan in theorie voorkomen, maar gebeurt niet in praktijk
-
+        
+        #0.25 - 0 = 0.25!!!!!!
         x3 = torch.maximum(conf_thres - under_thr_target_conf, zeros) #eq. 3 in paper #size is rondom torch.Size([200000])
         #±200000 gedeeld door 201600
+        print(x3) #BIJNA ALLEMAAL 0.25!!!!!!!
         mean_conf = torch.sum(x3, dim=0) / (output_patch.size()[0] * output_patch.size()[1])
 
         return mean_conf
@@ -557,6 +563,9 @@ class UAPPhantomSponge:
               {round(loss.item(),3)}|{round(max_objects_loss.item(),3)}|{round(bboxes_area_loss.item(),3)}|{round(iou_loss.item(),3)}")
         self.models[r].zero_grad()
 
+        #print(type(self.models[r]))
+        #print(loss)
+        #print(adv_patch)
         #gradient of the loss w.r.t. the adv_patch
         data_grad = torch.autograd.grad(loss, adv_patch)[0]
         #print(f"data grad =  {data_grad[0]}")

@@ -553,6 +553,9 @@ class UAPPhantomSponge:
               {round(loss.item(),3)}|{round(max_objects_loss.item(),3)}|{round(bboxes_area_loss.item(),3)}|{round(iou_loss.item(),3)}")
         self.models[r].zero_grad()
 
+        #print(type(self.models[r]))
+        #print(loss)
+        #print(adv_patch)
         #gradient of the loss w.r.t. the adv_patch
         data_grad = torch.autograd.grad(loss, adv_patch)[0]
         #print(f"data grad =  {data_grad[0]}")
