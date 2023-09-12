@@ -38,6 +38,9 @@ class SplitDatasetCombined_BDD:
         #returnt de indices voor train,val en test
         #[0:1350], [1350:1500], [1500:2000] respectively
         train_indices, val_indices, test_indices = self.create_random_indices(val_split)
+        # print(train_indices)
+        # print(val_indices)
+        # print(test_indices)
 
         #waarom zou je nog een keer shufflen? dat is al in create_random_indices gedaan
         np.random.shuffle(train_indices)
@@ -102,6 +105,7 @@ class CustomDataset(Dataset):
         return len(self.img_names)
 
     def __getitem__(self, idx):
+        print(idx)
         img_path = os.path.join(self.img_dir, self.img_names[idx])
         lab_path = os.path.join(self.lab_dir, self.img_names[idx]).replace('.jpg', '.txt').replace('.png', '.txt')
         #numpyarray (720, 1280, 3) (y-as, x-as, RGB)
