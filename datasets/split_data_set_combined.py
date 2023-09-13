@@ -105,7 +105,7 @@ class CustomDataset(Dataset):
         return len(self.img_names)
 
     def __getitem__(self, idx):
-        print(idx)
+        #print(idx)
         img_path = os.path.join(self.img_dir, self.img_names[idx])
         lab_path = os.path.join(self.lab_dir, self.img_names[idx]).replace('.jpg', '.txt').replace('.png', '.txt')
         #numpyarray (720, 1280, 3) (y-as, x-as, RGB)
