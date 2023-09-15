@@ -363,7 +363,7 @@ class UAPPhantomSponge:
             #8 plaatjes per batch
             #25200 bounding boxes per plaatje
             #85 = (x, y, width, height), object confidence score, and class probabilities. (dus 80 class probs)
-        #print(output_patch.size())
+        print(output_patch.size())
 
         #output_patch[:, :, 5:] = alle classes
         #output_patch[:, :, 4:5] = confidence score
@@ -414,7 +414,7 @@ class UAPPhantomSponge:
         #shows the batch average of the number of bbs that go over the conf_thres of 0.25
         #Higher conf_avg, the better. In that case, NMS has more work to do, which is what we want
         conf_avg = len(conf.view(-1)[conf.view(-1) > conf_thres]) / len(output_patch)
-        #print(f"batch average number (/8) of bbs that will be passed to the NMS stage: {conf_avg}")
+        print(f"batch average number (/8) of bbs that will be passed to the NMS stage: {conf_avg}")
 
         zeros = torch.zeros(under_thr_target_conf.size()).to(output_patch.device) #size is rondom torch.Size([200000])
         zeros.requires_grad = True
@@ -550,7 +550,7 @@ class UAPPhantomSponge:
             loss = loss.cuda()
 
         print(f"combined_loss, max_obj, bb_area, iou_loss for this batch = \
-              {round(loss.item(),3)}|{round(max_objects_loss.item(),3)}|{round(bboxes_area_loss.item(),3)}|{round(iou_loss.item(),3)}")
+            {round(loss.item(),3)}|{round(max_objects_loss.item() * self.lambda_1,3)}|{round(bboxes_area_loss.item() * self.lambda_2,3)}|{round(iou_loss.item() * (1 - self.lambda_1),3)}")
         self.models[r].zero_grad()
 
         #print(type(self.models[r]))
